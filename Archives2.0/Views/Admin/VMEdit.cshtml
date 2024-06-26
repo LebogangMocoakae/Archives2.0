@@ -1,0 +1,10 @@
+﻿@model Archives2._0.Models.User
+
+<form method="post" action="/HomeController/VMEdit">
+    <!-- Include form fields for editing VM details -->
+    <label>Name:</label>
+    <input type="text" name="Name" value="@Model.Name" required><br>
+    <!-- Add more fields as needed -->
+
+    <input type="submit" value="Save">
+</form>

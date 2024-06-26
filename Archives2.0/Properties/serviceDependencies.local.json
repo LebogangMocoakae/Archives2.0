@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "ConnectionStrings:DefaultConnection"
+    },
+    "identityapp1": {
+      "connectionInfo": "App registration: Archives2, Tenant: Default Directory (kamvacloud.co.za - Microsoft Entra ID)",
+      "secretStore": "LocalSecretsFile",
+      "type": "identityapp.secretStore",
+      "connectionId": "AzureAD:ClientSecret"
+    }
+  }
+}
