@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <_ContentIncludedByDefault Remove="jsondeployments\EntryLevel.json" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.11.3" />
     <PackageReference Include="Azure.ResourceManager" Version="1.12.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
@@ -23,6 +27,10 @@
     <PackageReference Include="Microsoft.Identity.Web" Version="2.19.0" />
     <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="2.16.0" />
     <PackageReference Include="Microsoft.Identity.Web.UI" Version="2.19.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="JSONDeployments\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,11 @@
 ﻿using Microsoft.Azure.Management.Compute.Fluent;
+using Microsoft.Azure.Management.Compute.Fluent.Models;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
+using Microsoft.Azure.Management.ResourceManager.Fluent.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Archives2._0.Services
 {
@@ -49,5 +54,24 @@ namespace Archives2._0.Services
         {
             await _azure.VirtualMachines.GetById(vmId).DeallocateAsync();
         }
+
+
+        public async Task DeployResourcesFromTemplateAsync(string templateContent)
+        {
+            string groupName = "RG1";
+            string deploymentName = "MyDeployment";
+
+            var deployment = await _azure.Deployments
+                                         .Define(deploymentName)
+                                         .WithExistingResourceGroup(groupName)
+                                         .WithTemplate(templateContent)
+                                         .WithParameters("{}")
+                                         .WithMode(DeploymentMode.Incremental)
+                                         .CreateAsync();
+        }
+
+
+
+
     }
 }

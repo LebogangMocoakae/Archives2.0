@@ -34,6 +34,7 @@ builder.Services.AddControllersWithViews(options =>{
 });
 
 
+
 builder.Services.AddControllersWithViews()
     .AddMicrosoftIdentityUI();
 

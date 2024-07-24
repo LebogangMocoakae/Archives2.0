@@ -3,6 +3,7 @@ using Archives2._0.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json.Linq;
 
 namespace Archives2._0.Controllers
 {
@@ -104,7 +105,34 @@ namespace Archives2._0.Controllers
             return View();
         }
 
-        [AllowAnonymous]
+        [HttpGet]
+
+        public IActionResult VMDeploy()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> VMDeploy(string vmName, string adminUsername, string adminPassword, string osType)
+        {
+            var jsonFilePath = Path.Combine(Directory.GetCurrentDirectory(), "JSONDeployments", "EntryLevel.json");
+
+            var json = System.IO.File.ReadAllText(jsonFilePath);
+            var template = JObject.Parse(json);
+
+            // Update the template with form values
+            template["parameters"]["vmName"]["defaultValue"] = vmName;
+            template["parameters"]["adminUsername"]["defaultValue"] = adminUsername;
+            template["parameters"]["adminPassword"]["defaultValue"] = adminPassword;
+            template["parameters"]["osType"]["defaultValue"] = osType;
+
+            // Deploy resources from the template
+            await _azureVmService.DeployResourcesFromTemplateAsync(template.ToString());
+
+            return View(); // Create a view to show deployment success
+        }
+    
+    [AllowAnonymous]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
