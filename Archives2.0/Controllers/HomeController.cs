@@ -120,7 +120,7 @@ namespace Archives2._0.Controllers
             var json = System.IO.File.ReadAllText(jsonFilePath);
             var template = JObject.Parse(json);
 
-            // Update the template with form values
+
             template["parameters"]["vmName"]["defaultValue"] = vmName;
             template["parameters"]["adminUsername"]["defaultValue"] = adminUsername;
             template["parameters"]["adminPassword"]["defaultValue"] = adminPassword;
