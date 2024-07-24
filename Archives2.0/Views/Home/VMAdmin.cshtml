@@ -4,93 +4,86 @@
     ViewData["Title"] = "VM Admin";
 }
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VM Admin - Kamva Cloud Technologies</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-   
-</head>
 <body>
-    <div class="sub-navbar">
-        <ul>
-            <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="VMAdmin">Virtual Machines</a></li>
-            <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="VMCreate">Create VM</a></li>
-            <li><a class="nav-link" href="#">Storage</a></li>
-        </ul>
+<div class="sub-navbar">
+    <ul>
+        <li><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="VMAdmin">Virtual Machines</a></li>
+        <li><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="VMCreate">Create VM</a></li>
+        <li><a href="#">Storage</a></li>
+    </ul>
     </div>
-
-    <h2>Resources</h2>
-
-    @if (Model != null && Model.Count > 0)
-    {
-        <table class="table table-striped table-bordered">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Name</th>
-                    <th>Region</th>
-                    <th>Size</th>
-                    <th>Status</th>
-                    <th>OS</th>
-                    <th>Public IP</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var vm in Model)
-                {
-                    <tr class="clickable-row" data-id="@vm.Id">
-                        <td>@vm.Name</td>
-                        <td>@vm.RegionName</td>
-                        <td>@vm.Size</td>
-                        <td>@vm.PowerState.Value</td>
-                        <td>@vm.OSType</td>
-                        <td>@vm.GetPrimaryPublicIPAddress().IPAddress</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-
-        <div id="dropdown" class="dropdown-menu">
-            <a href="#" id="connect-option">Connect</a>
-            <a href="#" id="edit-option">More Information</a>
-        </div>
-    }
-    else
-    {
-        <p class="text-center">No resources found.</p>
-    }
-
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.clickable-row').on('click', function (e) {
-                var vmId = $(this).data('id');
-                var dropdown = $('#dropdown');
-                dropdown.css({
-                    display: 'block',
-                    left: e.pageX,
-                    top: e.pageY
-                }).data('vm-id', vmId);
-            });
-
-            $(document).on('click', function (e) {
-                if (!$(e.target).closest('.clickable-row, #dropdown').length) {
-                    $('#dropdown').hide();
-                }
-            });
-
-            $('#connect-option').on('click', function () {
-                var vmId = $('#dropdown').data('vm-id');
-                window.location.href = '/Home/DownloadRdp?id=' + vmId;
-            });
-
-            $('#edit-option').on('click', function () {
-                var vmId = $('#dropdown').data('vm-id');
-                window.location.href = '/Home/VMEdit?id=' + vmId;
-            });
-        });
-    </script>
 </body>
-</html>
+<h1>My VMs</h1>
+<h2>Resources</h2>
+
+@if (Model != null && Model.Count > 0)
+{
+     <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Region</th>
+                <th>Size</th>
+                <th>Status</th>
+                <th>OS</th>
+                <th>Public IP</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var vm in Model)
+            {
+                <tr class="clickable-row" data-id="@vm.Id">
+                    <td>@vm.Name</td>
+                    <td>@vm.RegionName</td>
+                    <td>@vm.Size</td>
+                    <td>@vm.PowerState.Value</td>
+                    <td>@vm.OSType</td>
+                    <td>@vm.GetPrimaryPublicIPAddress().IPAddress</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+
+    <div id="dropdown" class="dropdown-menu">
+        <a href="#" id="connect-option">Connect</a>
+        <a href="#" id="edit-option">More Information</a>   
+    </div>
+}
+else
+{
+    <p>No resources found.</p>
+}
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('.clickable-row').on('click', function (e) {
+            var vmId = $(this).data('id');
+            var dropdown = $('#dropdown');
+            dropdown.css({
+                display: 'block',
+                left: e.pageX,
+                top: e.pageY
+            }).data('vm-id', vmId);
+        });
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('.clickable-row, #dropdown').length) {
+                $('#dropdown').hide();
+            }
+        });
+
+        $('#connect-option').on('click', function () {
+            var vmId = $('#dropdown').data('vm-id');
+            window.location.href = '/Home/DownloadRdp?id=' + vmId;
+        });
+
+        $('#edit-option').on('click', function () {
+            var vmId = $('#dropdown').data('vm-id');
+            window.location.href = '/Home/VMEdit?id=' + vmId;
+        });    
+    });
+</script>

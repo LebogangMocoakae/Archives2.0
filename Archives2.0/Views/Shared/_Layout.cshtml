@@ -6,7 +6,7 @@
     <title>@ViewData["Title"] - Archives2._0</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Archives2.0.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Archives2._0.styles.css" asp-append-version="true" />
 </head>
 <body>
     <header>
@@ -19,15 +19,18 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Dashboard">Dashboard</a>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Admin">Admin</a>
                             </li>
                         }
+
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>
@@ -40,9 +43,9 @@
         </main>
     </div>
 
-    <footer class="border-footer text-muted">
+    <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2024 - Archives2.0 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Archives2._0 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
