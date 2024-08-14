@@ -1,0 +1,32 @@
+﻿@model Archives2._0.Models.StorageViewModel
+
+@{
+    ViewData["Title"] = "Storage";
+}
+<head>
+
+</head>
+
+
+<div class="sub-navbar">
+    <ul>
+        <li><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="VMAdmin">Virtual Machines</a></li>
+        <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="VMCreate">Create VM</a></li>
+        <li><a href="#">Storage</a></li>
+    </ul>
+</div>
+<a href="#" class="btn btn-primary">Connect An Account</a>
+<a href="#" class="btn btn-primary">Create New Storage</a>
+
+<h1>Cloud Storage</h1>
+
+@if (Model != null)
+{
+    <div id="container-view">
+        @Html.Partial("_DirectoryView", Model)
+    </div>
+}
+else
+{
+    <p>No containers or blobs found.</p>
+}

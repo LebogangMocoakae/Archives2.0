@@ -47,9 +47,11 @@ builder.Services.AddSingleton<AzureResourceServices>(provider =>
     var clientSecret = configuration["AzureAd:ClientSecret"];
     var tenantId = configuration["AzureAd:TenantId"];
     var subscriptionId = "a1d1ccd2-cdb0-4acd-ab00-bd1f77376278"; // replace with your subscription id
+    string storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=kamvatest;AccountKey=9idC6E+3U5mKPopRDWvy4UtCg8VFGXUAB4Ia3PuTCvlIi3kOSye+SFaoNILWRacxNYiu0MziDDpV+AStQe7WjA==;EndpointSuffix=core.windows.net";
 
-    return new AzureResourceServices(clientId, clientSecret, tenantId, subscriptionId);
+    return new AzureResourceServices(clientId, clientSecret, tenantId, subscriptionId, storageConnectionString);
 });
+
 
 
 
@@ -100,6 +102,11 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "storageDownload",
+    pattern: "Storage/Download",
+    defaults: new { controller = "Storage", action = "Download" });
 app.MapRazorPages();
 
 app.Run();

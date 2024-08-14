@@ -1,0 +1,188 @@
+﻿@model Archives2._0.Models.StorageViewModel
+
+<style>
+    /* Your table and UI styling */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .container-name {
+        font-weight: bold;
+        font-size: 18px;
+        background-color: #d9edf7;
+        padding-left: 10px;
+    }
+
+    .folder-name {
+        padding-left: 20px;
+        font-weight: bold;
+        color: #337ab7;
+    }
+
+    .file-name {
+        padding-left: 40px;
+    }
+
+    .download-link {
+        color: #337ab7;
+        text-decoration: none;
+    }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+    .icon {
+        margin-right: 10px;
+    }
+
+    .pagination-controls {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+        .pagination-controls button {
+            margin: 0 5px;
+            padding: 5px 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+            .pagination-controls button:disabled {
+                background-color: #cccccc;
+                cursor: not-allowed;
+            }
+</style>
+
+<!-- Search Box -->
+<input type="text" id="searchTerm" placeholder="Search by file name" onkeyup="performSearch()" />
+
+<table id="resultsTable">
+    <thead>
+        <tr>
+            <th>Container Name</th>
+            <th>Path</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="resultsBody">
+        @foreach (var container in Model.Containers)
+        {
+            <tr>
+                <td colspan="3" class="container-name">Account Name: @container.Name</td>
+            </tr>
+            @foreach (var item in container.Items)
+            {
+                <tr>
+                    <td>
+                        <i class="icon @(item.IsDirectory ? "fas fa-folder" : "fas fa-file")"></i>
+                        @item.Name
+                    </td>
+                    <td>@item.Path</td>
+                    <td>
+                        @if (!item.IsDirectory)
+                        {
+                            <a class="download-link" href="@Url.Action("Download", "Home", new { containerName = container.Name, blobName = item.Path })">
+                                Download
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<div class="pagination-controls">
+    <button id="prevPageBtn" onclick="changePage(-1)">Previous</button>
+    <span id="pageNumber">@ViewBag.PageNumber</span>
+    <button id="nextPageBtn" onclick="changePage(1)">Next</button>
+</div>
+
+<script>
+    var currentPageNumber = @ViewBag.PageNumber;
+    var pageSize = @ViewBag.PageSize;
+
+    function performSearch() {
+        var searchTerm = document.getElementById("searchTerm").value;
+        updateTable(searchTerm, currentPageNumber);
+    }
+
+    function changePage(offset) {
+        currentPageNumber += offset;
+        var searchTerm = document.getElementById("searchTerm").value;
+        updateTable(searchTerm, currentPageNumber);
+    }
+
+    function updateTable(searchTerm, pageNumber) {
+        var path = "@(ViewBag.Path ?? "")";
+
+        fetch(`@Url.Action("Search", "Home")?searchTerm=${encodeURIComponent(searchTerm)}&path=${encodeURIComponent(path)}&pageNumber=${pageNumber}&pageSize=${pageSize}`)
+            .then(response => response.json())
+            .then(data => {
+                var resultsBody = document.getElementById("resultsBody");
+                resultsBody.innerHTML = ""; // Clear existing results
+
+                data.containers.forEach(container => {
+                    var containerRow = document.createElement("tr");
+                    var containerCell = document.createElement("td");
+                    containerCell.colSpan = 3;
+                    containerCell.className = "container-name";
+                    containerCell.textContent = "Account Name: " + container.name;
+                    containerRow.appendChild(containerCell);
+                    resultsBody.appendChild(containerRow);
+
+                    container.items.forEach(item => {
+                        var itemRow = document.createElement("tr");
+
+                        var itemNameCell = document.createElement("td");
+                        itemNameCell.innerHTML = `<i class="icon fas ${item.isDirectory ? 'fa-folder' : 'fa-file'}"></i> ${item.name}`;
+                        itemRow.appendChild(itemNameCell);
+
+                        var itemPathCell = document.createElement("td");
+                        itemPathCell.textContent = item.path;
+                        itemRow.appendChild(itemPathCell);
+
+                        var actionCell = document.createElement("td");
+                        if (!item.isDirectory) {
+                            var downloadLink = document.createElement("a");
+                            downloadLink.className = "download-link";
+                            downloadLink.href = `@Url.Action("Download", "Home")?containerName=${container.name}&blobName=${item.path}`;
+                            downloadLink.textContent = "Download";
+                            actionCell.appendChild(downloadLink);
+                        }
+                        itemRow.appendChild(actionCell);
+
+                        resultsBody.appendChild(itemRow);
+                    });
+                });
+
+                document.getElementById("pageNumber").textContent = pageNumber;
+                document.getElementById("prevPageBtn").disabled = pageNumber === 1;
+                document.getElementById("nextPageBtn").disabled = !data.hasNextPage;
+            });
+    }
+
+    // Initialize the pagination buttons state
+    document.getElementById("prevPageBtn").disabled = currentPageNumber === 1;
+    document.getElementById("nextPageBtn").disabled = @Model.Containers.Any(c => c.Items.Count < ViewBag.PageSize);
+</script>
+

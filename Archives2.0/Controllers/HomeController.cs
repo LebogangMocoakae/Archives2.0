@@ -12,11 +12,13 @@ namespace Archives2._0.Controllers
     {
         private readonly AzureResourceServices _azureVmService;
         private readonly ILogger<HomeController> _logger;
+        private readonly AzureResourceServices _storageService;
 
-        public HomeController(ILogger<HomeController> logger, AzureResourceServices azureVmService)
+        public HomeController(ILogger<HomeController> logger, AzureResourceServices azureVmService, AzureResourceServices storageService)
         { 
             _logger = logger;
             _azureVmService = azureVmService;
+            _storageService = storageService;
         }
 
         public async Task<IActionResult> Index()
@@ -24,6 +26,68 @@ namespace Archives2._0.Controllers
             var vms = await _azureVmService.GetVirtualMachinesAsync();
             return View(vms);
         }
+
+        public async Task<IActionResult> Storage(string path = "", string searchTerm = "", int pageNumber = 1, int pageSize = 10)
+        {
+            var model = await _storageService.GetItemsAsync(path);
+
+            // Filter by blob name if searchTerm is provided
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                foreach (var container in model.Containers)
+                {
+                    container.Items = container.Items
+                        .Where(i => i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                }
+            }
+
+            // Paginate the items
+            foreach (var container in model.Containers)
+            {
+                container.Items = container.Items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            }
+
+            ViewBag.PageNumber = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.SearchTerm = searchTerm;
+
+            return View(model);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Search(string searchTerm = "", string path = "", int pageNumber = 1, int pageSize = 10)
+        {
+            var model = await _storageService.GetItemsAsync(path);
+
+            // Filter by blob name if searchTerm is provided
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                foreach (var container in model.Containers)
+                {
+                    container.Items = container.Items
+                        .Where(i => i.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase))
+                        .ToList();
+                }
+            }
+
+            // Paginate the items
+            foreach (var container in model.Containers)
+            {
+                container.Items = container.Items.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            }
+
+            var result = new
+            {
+                Containers = model.Containers,
+                PageNumber = pageNumber,
+                HasNextPage = model.Containers.Any(c => c.Items.Count == pageSize)
+            };
+
+            return Json(result);
+        }
+
+
 
         public IActionResult Products()
         {
@@ -35,6 +99,29 @@ namespace Archives2._0.Controllers
 
             return View();
         }
+
+
+
+        public async Task<IActionResult> Download(string containerName, string blobName)
+        {
+            try
+            {
+                var blobDownloadInfo = await _storageService.DownloadBlobAsync(containerName, blobName);
+
+                if (blobDownloadInfo == null)
+                {
+                    return NotFound();
+                }
+
+                return File(blobDownloadInfo.Content, blobDownloadInfo.ContentType, blobName);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception (optional)
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
 
         public async Task<IActionResult> Admin()
         {
@@ -131,8 +218,9 @@ namespace Archives2._0.Controllers
 
             return View(); // Create a view to show deployment success
         }
-    
-    [AllowAnonymous]
+
+
+        [AllowAnonymous]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
