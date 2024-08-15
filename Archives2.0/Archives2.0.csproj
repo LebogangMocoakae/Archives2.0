@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="jsondeployments\EntryLevel.json" />
+    <_ContentIncludedByDefault Remove="jsondeployments\StorageAccount.json" />
   </ItemGroup>
 
   <ItemGroup>

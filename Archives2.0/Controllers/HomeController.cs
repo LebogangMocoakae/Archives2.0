@@ -21,6 +21,34 @@ namespace Archives2._0.Controllers
             _storageService = storageService;
         }
 
+        public IActionResult Products()
+        {
+            return View();
+        }
+
+        public IActionResult Dashboard()
+        {
+
+            return View();
+        }
+
+        public IActionResult CreateStorage()
+        {
+            return View();
+        }
+
+        public IActionResult VMCreate()
+        {
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult VMDeploy()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> Index()
         {
             var vms = await _azureVmService.GetVirtualMachinesAsync();
@@ -87,21 +115,6 @@ namespace Archives2._0.Controllers
             return Json(result);
         }
 
-
-
-        public IActionResult Products()
-        {
-            return View();
-        }
-
-        public IActionResult Dashboard()
-        {
-
-            return View();
-        }
-
-
-
         public async Task<IActionResult> Download(string containerName, string blobName)
         {
             try
@@ -121,7 +134,6 @@ namespace Archives2._0.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
-
 
         public async Task<IActionResult> Admin()
         {
@@ -186,19 +198,6 @@ namespace Archives2._0.Controllers
             return File(stream, "application/x-rdp", rdpFileName);
         }
 
-        public IActionResult VMCreate()
-        {
-
-            return View();
-        }
-
-        [HttpGet]
-
-        public IActionResult VMDeploy()
-        {
-            return View();
-        }
-
         [HttpPost]
         public async Task<IActionResult> VMDeploy(string vmName, string adminUsername, string adminPassword, string osType)
         {
@@ -218,7 +217,6 @@ namespace Archives2._0.Controllers
 
             return View(); // Create a view to show deployment success
         }
-
 
         [AllowAnonymous]
         public IActionResult Error()

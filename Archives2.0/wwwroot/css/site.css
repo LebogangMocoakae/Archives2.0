@@ -31,9 +31,9 @@ body {
         font-size: 1.1rem;
     }
 
-        .sub-navbar a:hover {
-            text-decoration: underline;
-        }
+    .sub-navbar a:hover {
+        text-decoration: underline;
+     }
 
 h1, h2 {
     text-align: center;

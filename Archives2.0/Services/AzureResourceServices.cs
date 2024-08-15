@@ -1,11 +1,7 @@
 ﻿using Microsoft.Azure.Management.Compute.Fluent;
-using Microsoft.Azure.Management.Compute.Fluent.Models;
 using Microsoft.Azure.Management.Fluent;
 using Microsoft.Azure.Management.ResourceManager.Fluent;
-using Microsoft.Azure.Management.ResourceManager.Fluent.Core;
 using Microsoft.Azure.Management.ResourceManager.Fluent.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Archives2._0.Models;
@@ -71,6 +67,7 @@ namespace Archives2._0.Services
             {
                 vms.Add(vm);  
             }
+
             return vms.AsReadOnly();         
         }
 
@@ -93,7 +90,6 @@ namespace Archives2._0.Services
         {
             await _azure.VirtualMachines.GetById(vmId).DeallocateAsync();
         }
-
 
         public async Task DeployResourcesFromTemplateAsync(string templateContent)
         {
@@ -137,7 +133,6 @@ namespace Archives2._0.Services
 
             return await blobClient.DownloadAsync();
         }
-
 
     }
 }
