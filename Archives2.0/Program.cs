@@ -1,17 +1,9 @@
 using Archives2._0.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.UI;
-using Microsoft.Azure.Management.Storage.Fluent.Models;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Graph.ExternalConnectors;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Archives2._0.Services;
 
 var builder = WebApplication.CreateBuilder(args);
