@@ -136,3 +136,86 @@
     }
 </body>
 </html>
+=======
+
+<div class="sub-navbar">
+    <ul>
+        <li><a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="VMAdmin">Virtual Machines</a></li>
+        <li><a href="#">Create VM</a></li>
+        <li><a href="#">Storage</a></li>
+    </ul>
+</div>
+
+
+<h1>Configurations</h1>
+
+@if (Model != null)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Region</th>
+                <th>Size</th>
+                <th>Status</th>
+                <th>OS</th>
+                <th>Public IP</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Model.Name</td>
+                <td>@Model.RegionName</td>
+                <td>@Model.Size</td>
+                <td>@Model.PowerState.Value</td>
+                <td>@Model.OSType</td>
+                <td>@Model.GetPrimaryPublicIPAddress().IPAddress</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <form method="post" asp-action="VMEdit">
+        <input type="hidden" name="Id" value="@Model.Id" />
+        <!-- Add fields for editing the VM properties -->
+        <div class="form-group">
+            <label for="vmName">Computer Admin</label>
+            <input type="text" class="form-control" id="vmName" name="Name" value="@Model.OSProfile.AdminUsername" />
+
+                <label for="vmName">Update Configurations</label>
+    <input type="text" class="form-control" id="uptime" name="Uptime" 
+           value="@((Model.OSType.ToString() == "Linux") ? "null" : Model.OSProfile.WindowsConfiguration.PatchSettings.PatchMode)" />
+
+            <label for="vmName">Disk Size</label>
+            <input type="text" class="form-control" id="vmName" name="Name" value="@Model.OSDiskSize GB" />
+
+            <label for="vmName">Private IP Address</label>
+            <input type="text" class="form-control" id="vmName" name="Name" value="@Model.GetPrimaryNetworkInterface().PrimaryPrivateIP" />
+
+            <label for="vmName">Private Network Name</label>
+            <input type="text" class="form-control" id="vmName" name="Name" value="@Model.GetPrimaryNetworkInterface().PrimaryIPConfiguration.GetNetwork().Name" />
+
+            <label for="vmName">Machine Status</label>
+            <input type="text" class="form-control" id="vmName" name="Name" value="@Model.ProvisioningState" />
+        </div>
+        <!-- Add more fields as needed -->
+
+        <input type="hidden" name="id" value="@Model.VMId" />
+        <!-- Existing form fields -->
+        <!-- Restart VM button -->
+        <button type="submit" class="btn btn-primary" name="action" value="Restart">Restart VM</button>
+
+        <!-- Power on VM button -->
+        <button type="submit" class="btn btn-success" name="action" value="Power On">Power On VM</button>
+
+        <button type="submit" class="btn btn-danger" name="action" value="Power Off">Power Off VM</button>
+
+
+    
+    </form>
+}
+else
+{
+    <p>No VM found.</p>
+}
+
+

@@ -3,37 +3,36 @@
 }
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width" />
     <title>Create Virtual Machine</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
- 
+   
 </head>
 <body>
-    <nav class="sub-navbar">
+    <div class="sub-navbar">
         <ul>
             <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="VMAdmin">Virtual Machines</a></li>
             <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="VMCreate">Create VM</a></li>
             <li><a class="nav-link" asp-area="" asp-controller="Home" asp-action="Storage">Storage</a></li>
         </ul>
-    </nav>
+    </div>
 
     <div class="container mt-5">
-        <h1 class="mb-4">Create Virtual Machine</h1>
+        <h1>Create Virtual Machine</h1>
 
-        <div class="row">
-            <div class="col-md-4 mb-4">
+        <div class="row mt-4">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Entry Level Specifications</h5>
+                        <h5 class="card-title">Entry level Specifications</h5>
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
                                     <td>CPU Cores</td>
                                     <td>4</td>
-                                </tr>
+                                </tr>                        
                                 <tr>
                                     <td>Ram</td>
                                     <td>8GB</td>
@@ -48,15 +47,15 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <a href="VMDeploy" class="btn btn-primary">Deploy</a>
+                        <a href="#" class="btn btn-primary">Click here</a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Mid Level Specifications</h5>
+                        <h5 class="card-title">Mid level Specifications</h5>
                         <table class="table table-bordered">
                             <tbody>
                                 <tr>
@@ -77,12 +76,12 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <a href="#" class="btn btn-primary">Deploy</a>
+                        <a href="#" class="btn btn-primary">Click here</a>
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-4 mb-4">
+            <div class="col-md-4">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">High End Specifications</h5>
@@ -106,15 +105,17 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <a href="#" class="btn btn-primary">Deploy</a>
+                        <a href="#" class="btn btn-primary">Click here</a>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" integrity="sha384-pzjw8f+ua7Kw1TIqQUQUGf0l4FQ751g3ynx3BMZ1vrBsfJvFz5QSfBL/4Wy0W7rB" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8sh+G2+d9i4+XAZM3L+6a/YmN+hKb95vda/nbQ" crossorigin="anonymous"></script>
 </body>
 </html>
+
