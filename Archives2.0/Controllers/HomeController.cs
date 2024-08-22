@@ -3,7 +3,6 @@ using Archives2._0.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json.Linq;
 
 namespace Archives2._0.Controllers
 {
@@ -216,6 +215,7 @@ namespace Archives2._0.Controllers
             await _azureVmService.DeployResourcesFromTemplateAsync(template.ToString());
 
             return View(); // Create a view to show deployment success
+
         }
 
         [AllowAnonymous]
