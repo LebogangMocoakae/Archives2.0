@@ -134,5 +134,19 @@ namespace Archives2._0.Services
             return await blobClient.DownloadAsync();
         }
 
+        public async Task<IEnumerable<BlobContainerItem>> GetAllContainersAsync()
+        {
+            BlobServiceClient blobServiceClient = new BlobServiceClient(_connectionString);
+            var containers = new List<BlobContainerItem>();
+
+            await foreach (BlobContainerItem container in blobServiceClient.GetBlobContainersAsync())
+            {
+                containers.Add(container);
+            }
+
+            return containers;
+        }
+
+
     }
 }

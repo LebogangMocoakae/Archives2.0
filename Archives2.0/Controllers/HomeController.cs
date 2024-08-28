@@ -115,6 +115,12 @@ namespace Archives2._0.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> GetContainers()
+        {
+            var containers = await _storageService.GetAllContainersAsync();
+            return Json(containers.Select(c => c.Name));
+        }
+
         public async Task<IActionResult> Download(string containerName, string blobName)
         {
             try

@@ -76,6 +76,8 @@
 <input type="text" id="searchTerm" placeholder="Search by file name" onkeyup="performSearch()" />
 
 <table id="resultsTable">
+
+  
     <thead>
         <tr>
             <th>File Name</th>
@@ -86,9 +88,13 @@
     <tbody id="resultsBody">
         @foreach (var container in Model.Containers)
         {
-            <tr>
-                <td colspan="3" class="container-name">Account Name: @container.Name</td>
-            </tr>
+        <td colspan="3" class="container-name">
+            <label for="container-name-dropdown">Container Name:</label>
+            <select id="container-name-dropdown" name="container-name" onchange="loadContainerContents()">
+                <!-- Options will be populated here by JavaScript -->
+            </select>
+        </td>
+
             @foreach (var item in container.Items)
             {
                 <tr>
@@ -185,4 +191,43 @@
     document.getElementById("prevPageBtn").disabled = currentPageNumber === 1;
     document.getElementById("nextPageBtn").disabled = @Model.Containers.Any(c => c.Items.Count < ViewBag.PageSize);
 </script>
+<script>
+function loadContainerContents() {
+    var selectedContainer = document.getElementById("container-name-dropdown").value;
+
+    if (selectedContainer) {
+        fetch('/Home/GetContainerContents?containerName=' + encodeURIComponent(selectedContainer))
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); // Assuming you're returning HTML to render directly
+            })
+            .then(data => {
+                document.getElementById("container-contents").innerHTML = data;
+            })
+            .catch(error => console.error('Error:', error));
+    }
+}
+
+<script/>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        fetch('/Home/GetContainers')
+            .then(response => response.json())
+            .then(data => {
+                var dropdown = document.getElementById("container-name-dropdown");
+                dropdown.innerHTML = ""; // Clear existing options
+
+                data.forEach(function (containerName) {
+                    var option = document.createElement("option");
+                    option.value = containerName;
+                    option.text = containerName;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading containers:', error));
+    });
+</script>
+
 
